@@ -3,15 +3,25 @@ package com.znow.zetengine;
 public class GameContainer implements Runnable {
 
 	private Thread thread;
+	private Window window;
+	private Renderer renderer;
 	
 	private boolean running = false;
 	private final double UPDATE_CAP = 1.0/60.0; // 60 frames per second
+	
+	// Data for game window
+	private int width = 1280, height = 720;
+	private float scale = 1;
+	private String title = "Game powered by ZetEngine";
 	
 	public GameContainer() {
 		
 	}
 	
 	public void start() {
+		window = new Window(this);
+		renderer = new Renderer(this);
+		
 		running = true;
 		
 		thread = new Thread(this);
@@ -53,7 +63,10 @@ public class GameContainer implements Runnable {
 			}
 			
 			if (render) {
+				renderer.clear(); // To clear screen
+				
 				// TODO: Render game
+				window.update();
 				frames++;
 			}
 			// If not rendering then just sleep
@@ -75,5 +88,41 @@ public class GameContainer implements Runnable {
 	
 	public void dispose() {
 		
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public float getScale() {
+		return scale;
+	}
+
+	public void setScale(float scale) {
+		this.scale = scale;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public Window getWindow() {
+		return window;
 	}
 }
