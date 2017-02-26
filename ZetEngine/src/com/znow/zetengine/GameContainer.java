@@ -1,6 +1,7 @@
 package com.znow.zetengine;
 
 import com.sun.glass.events.KeyEvent;
+import com.znow.test.TestGame;
 
 public class GameContainer implements Runnable {
 
@@ -8,6 +9,8 @@ public class GameContainer implements Runnable {
 	private Window window;
 	private Renderer renderer;
 	private Input input;
+	
+	private AbstractGame game;
 	
 	private boolean running = false;
 	private final double UPDATE_CAP = 1.0/60.0; // 60 frames per second
@@ -17,8 +20,8 @@ public class GameContainer implements Runnable {
 	private float scale = 1;
 	private String title = "Game powered by ZetEngine";
 	
-	public GameContainer() {
-		
+	public GameContainer(AbstractGame s_game) {
+		game = s_game;
 	}
 	
 	public void start() {
@@ -57,10 +60,8 @@ public class GameContainer implements Runnable {
 			while (unprocessedTime >= UPDATE_CAP) {
 				unprocessedTime -= UPDATE_CAP;
 				render = true;
-				// TODO: Update game
-				if (input.isKeyDown(KeyEvent.VK_W)) {
-					System.out.println("W is pressed");
-				}
+				
+				game.update(this, (float) UPDATE_CAP);
 				
 				input.update();
 				
@@ -74,6 +75,7 @@ public class GameContainer implements Runnable {
 			
 			if (render) {
 				renderer.clear(); // To clear screen
+				game.render(this, renderer);
 				
 				// TODO: Render game
 				window.update();
@@ -134,5 +136,9 @@ public class GameContainer implements Runnable {
 
 	public Window getWindow() {
 		return window;
+	}
+
+	public Input getInput() {
+		return input;
 	}
 }
