@@ -1,10 +1,13 @@
 package com.znow.zetengine;
 
+import com.sun.glass.events.KeyEvent;
+
 public class GameContainer implements Runnable {
 
 	private Thread thread;
 	private Window window;
 	private Renderer renderer;
+	private Input input;
 	
 	private boolean running = false;
 	private final double UPDATE_CAP = 1.0/60.0; // 60 frames per second
@@ -21,6 +24,7 @@ public class GameContainer implements Runnable {
 	public void start() {
 		window = new Window(this);
 		renderer = new Renderer(this);
+		input = new Input(this);
 		
 		running = true;
 		
@@ -54,6 +58,12 @@ public class GameContainer implements Runnable {
 				unprocessedTime -= UPDATE_CAP;
 				render = true;
 				// TODO: Update game
+				if (input.isKeyDown(KeyEvent.VK_W)) {
+					System.out.println("W is pressed");
+				}
+				
+				input.update();
+				
 				if (frameTime >= 1.0) {
 					frameTime = 0;
 					fps = frames;

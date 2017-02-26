@@ -15,8 +15,7 @@ public class Renderer {
 	
 	public void clear() {
 		for (int i = 0; i < pixels.length; i++) {
-			//pixels[i] = 0xFF000000; // Set color of pixel black
-			pixels[i] += i;
+			pixels[i] = 0; // Just clear every pixel
 		}
 	}
 }
