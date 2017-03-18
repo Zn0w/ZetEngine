@@ -26,11 +26,8 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
 	public Input(GameContainer s_gc) {
 		gc = s_gc;
 		
-		// Connect input listeners to the canvas
-		gc.getWindow().getCanvas().addKeyListener(this);
-		gc.getWindow().getCanvas().addMouseListener(this);
-		gc.getWindow().getCanvas().addMouseMotionListener(this);
-		gc.getWindow().getCanvas().addMouseWheelListener(this);
+		// Connect input listeners to the window
+		
 	}
 	
 	public void update() {
@@ -74,14 +71,14 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		mouseX = (int) (e.getX() / gc.getScale());
-		mouseY = (int) (e.getY() / gc.getScale());
+		mouseX = (int) (e.getX());
+		mouseY = (int) (e.getY());
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		mouseX = (int) (e.getX() / gc.getScale());
-		mouseY = (int) (e.getY() / gc.getScale());
+		mouseX = (int) (e.getX());
+		mouseY = (int) (e.getY());
 	}
 
 	@Override

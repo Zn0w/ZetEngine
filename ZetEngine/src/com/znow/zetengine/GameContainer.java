@@ -1,94 +1,45 @@
 package com.znow.zetengine;
 
-import com.sun.glass.events.KeyEvent;
-import com.znow.test.TestGame;
+import java.util.ArrayList;
 
 public class GameContainer implements Runnable {
 
+	private ZetGame game;
+	
 	private Thread thread;
-	private Window window;
-	private Renderer renderer;
+	//private DisplayManager renderer;
 	private Input input;
 	
-	private AbstractGame game;
-	
-	private boolean running = false;
-	private final double UPDATE_CAP = 1.0/60.0; // 60 frames per second
+	private boolean isRunning = false;
+	private final int FPS_CAP = 60;
 	
 	// Data for game window
-	private int width = 1280, height = 720;
-	private float scale = 1;
-	private String title = "Game powered by ZetEngine";
+	private int width, height;
+	private String title;
 	
-	public GameContainer(AbstractGame s_game) {
+	public GameContainer(int s_width, int s_height, String s_title, ZetGame s_game) {
+		width = s_width;
+		height = s_height;
+		title = s_title + " powered by ZetEngine";
 		game = s_game;
 	}
 	
 	public void start() {
-		window = new Window(this);
-		renderer = new Renderer(this);
+		//renderer = new DisplayManager();
 		input = new Input(this);
 		
-		running = true;
+		isRunning = true;
 		
 		thread = new Thread(this);
-		thread.run();
+		thread.start();
 	}
 	
 	public void run() {
-		boolean render = false;
+		//renderer.start();
 		
-		double firstTime = 0;
-		double lastTime = System.nanoTime() / 1000000000.0;
-		double passedTime = 0;
-		double unprocessedTime = 0;
-		
-		double frameTime = 0;
-		int frames = 0;
-		int fps = 0;
-		
-		while (running) {
-			render = false;
-			
-			firstTime = System.nanoTime() / 1000000000.0;
-			passedTime = firstTime - lastTime;
-			lastTime = firstTime;
-			
-			unprocessedTime += passedTime;
-			frameTime += passedTime;
-			
-			while (unprocessedTime >= UPDATE_CAP) {
-				unprocessedTime -= UPDATE_CAP;
-				render = true;
-				
-				game.update(this, (float) UPDATE_CAP);
-				
-				input.update();
-				
-				if (frameTime >= 1.0) {
-					frameTime = 0;
-					fps = frames;
-					frames = 0;
-					System.out.println("FPS: " + fps);
-				}
-			}
-			
-			if (render) {
-				renderer.clear(); // To clear screen
-				game.render(this, renderer);
-				
-				// TODO: Render game
-				window.update();
-				frames++;
-			}
-			// If not rendering then just sleep
-			else {
-				try {
-					Thread.sleep(1);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
+		while (isRunning) {	
+			game.update(this);
+			//game.render(this, renderer);
 		}
 		
 		dispose();
@@ -102,43 +53,17 @@ public class GameContainer implements Runnable {
 		
 	}
 
+	// Getters and setters
+	
 	public int getWidth() {
 		return width;
-	}
-
-	public void setWidth(int width) {
-		this.width = width;
 	}
 
 	public int getHeight() {
 		return height;
 	}
 
-	public void setHeight(int height) {
-		this.height = height;
-	}
-
-	public float getScale() {
-		return scale;
-	}
-
-	public void setScale(float scale) {
-		this.scale = scale;
-	}
-
 	public String getTitle() {
 		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public Window getWindow() {
-		return window;
-	}
-
-	public Input getInput() {
-		return input;
 	}
 }

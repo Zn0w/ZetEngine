@@ -1,34 +1,31 @@
 package com.znow.test;
 
-import java.awt.event.KeyEvent;
-
-import com.znow.zetengine.AbstractGame;
 import com.znow.zetengine.GameContainer;
-import com.znow.zetengine.Renderer;
-import com.znow.zetengine.gfx.Image;
+import com.znow.zetengine.GameObject;
+import com.znow.zetengine.DisplayManager;
+import com.znow.zetengine.ZetGame;
 
-public class TestGame extends AbstractGame {
+public class TestGame extends ZetGame {
 
-	private Image image;
-	
-	public TestGame() {
-		image = new Image("/test.png");
-	}
+	private GameObject box;
 	
 	public static void main(String[] args) {
-		GameContainer gc = new GameContainer(new TestGame());
+		GameContainer gc = new GameContainer(720, 480, "TestGame", new TestGame());
 		gc.start();
 	}
 
 	@Override
-	public void update(GameContainer gc, float deltaTime) {
-		if (gc.getInput().isKeyDown(KeyEvent.VK_F)) {
-			System.out.println("F is pressed");
-		}
+	public void init() {
+		box = new GameObject(400, 350, 50, 50);
 	}
 
 	@Override
-	public void render(GameContainer gc, Renderer renderer) {
-		renderer.drawImage(image, gc.getInput().getMouseX() - 32, gc.getInput().getMouseY() - 32);
+	public void render(GameContainer gc, DisplayManager renderer) {
+		box.draw(renderer);
+	}
+
+	@Override
+	public void update(GameContainer gc) {
+		
 	}
 }
