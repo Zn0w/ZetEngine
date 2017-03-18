@@ -5,10 +5,15 @@ import org.lwjgl.input.*;
 
 public class Player extends GameObject {
 
-	private static int SPEED = 5;
+	private static int SPEED = 1;
 	
-	public Player(int x, int y, int w, int h) {
-		super(x, y, w, h);
+	private int speedUp = SPEED;
+	private int speedDown = SPEED;
+	private int speedRight = SPEED;
+	private int speedLeft = SPEED;
+	
+	public Player(int x, int y, int w, int h, String tag) {
+		super(x, y, w, h, tag);
 	}
 
 	@Override
@@ -23,18 +28,38 @@ public class Player extends GameObject {
 
 	@Override
 	public void update() {
+		// Player controls
+		
 		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-			this.y -= SPEED;
+			this.y -= speedUp;
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-			this.y += SPEED;
+			this.y += speedDown;
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-			this.x += SPEED;
+			this.x += speedRight;
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-			this.x -= SPEED;
+			this.x -= speedLeft;
 		}
+		
+		speedUp = SPEED;
+		speedDown = SPEED;
+		speedLeft = SPEED;
+		speedRight = SPEED;
+		
+		// Collision handling
+		
+		if (getCollisionSide("wall") == "right")
+			speedRight = 0;
+		if (getCollisionSide("wall") == "left")
+			speedLeft = 0;
+		if (getCollisionSide("wall") == "up")
+			speedDown = 0;
+		if (getCollisionSide("wall") == "down")
+			speedUp = 0;
+		
+		// Just testing
 		
 		if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
 			visible = false;

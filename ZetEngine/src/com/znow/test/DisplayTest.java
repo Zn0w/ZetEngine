@@ -18,8 +18,8 @@ public class DisplayTest {
 	public static void main(String[] args) {
 		Renderer renderer = new Renderer();
 		
-		Player player = new Player(400, 400, 50, 50);
-		Wall rightWall = new Wall(600, 100, 20, 800);
+		Player player = new Player(400, 400, 50, 50, "player");
+		Wall rightWall = new Wall(600, 100, 20, 500, "wall");
 		
 		DisplayManager.createDisplay();
 		
@@ -37,8 +37,8 @@ public class DisplayTest {
 			/*player.update();
 			renderer.render(player);*/
 			
-			for (int i = 0; i < GameObject.objects.size(); i++) {
-				GameObject object = GameObject.objects.get(i);
+			for (int i = 0; i < GameObject.renderObjects.size(); i++) {
+				GameObject object = GameObject.renderObjects.get(i);
 				if (object.isActive())
 					object.update();
 				if (object.isVisible())
