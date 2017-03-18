@@ -8,6 +8,10 @@ import org.lwjgl.util.Rectangle;
 public abstract class GameObject {
 
 	protected int x, y, w, h;
+	
+	protected boolean visible = true;
+	protected boolean active = true;
+	
 	public static ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	
 	public abstract void init();
@@ -21,9 +25,13 @@ public abstract class GameObject {
 		y = sy;
 		w = sw;
 		h = sh;
+		
+		objects.add(this);
 	}
 	
 	public void draw() {
+		glColor3f(0.5f, 0.5f, 0.5f);
+		
 		glBegin(GL_QUADS);
 		glVertex2f(x, y);
 		glVertex2f(x + w, y);
@@ -31,5 +39,14 @@ public abstract class GameObject {
 		glVertex2f(x, y + h);
 		glEnd();
 	}
+	
+	public boolean isVisible() {
+		return visible;
+	}
+	
+	public boolean isActive() {
+		return active;
+	}
+	
 }
 	

@@ -35,8 +35,19 @@ public class Player extends GameObject {
 		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
 			this.x -= SPEED;
 		}
+		
+		if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+			visible = false;
+		}
+		if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+			visible = true;
+		}
+		if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+			active = false;
+		}
+		if (Keyboard.isKeyDown(Keyboard.KEY_F)) {
+			active = true;
+		}
 	}
-	
-	
 
 }
