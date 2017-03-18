@@ -7,7 +7,7 @@ import org.lwjgl.util.Rectangle;
 
 public abstract class GameObject {
 
-	private int x, y, w, h;
+	protected int x, y, w, h;
 	public static ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	
 	public abstract void init();
