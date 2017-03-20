@@ -8,6 +8,7 @@ import org.lwjgl.util.Rectangle;
 import com.znow.zetengine.DisplayManager;
 import com.znow.zetengine.GameObject;
 import com.znow.zetengine.Renderer;
+import com.znow.zetengine.level.Level;
 
 import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.opengl.*;
@@ -19,7 +20,7 @@ public class DisplayTest {
 		Renderer renderer = new Renderer();
 		
 		Player player = new Player(400, 400, 50, 50, "player");
-		Wall rightWall = new Wall(600, 100, 20, 500, "wall");
+		Wall rightWall = new Wall(600, 100, 100, 500, "wall");
 		
 		DisplayManager.createDisplay();
 		
@@ -34,8 +35,14 @@ public class DisplayTest {
 		while (!Display.isCloseRequested()) {
 			renderer.prepare();
 			
-			/*player.update();
-			renderer.render(player);*/
+			if (Level.levels.size() != 0) {
+				for (int i = 0; i < Level.levels.size(); i++) {
+					Level level = Level.levels.get(i);
+					if (level.isActive()) {
+						level
+					}
+				}
+			}
 			
 			for (int i = 0; i < GameObject.renderObjects.size(); i++) {
 				GameObject object = GameObject.renderObjects.get(i);

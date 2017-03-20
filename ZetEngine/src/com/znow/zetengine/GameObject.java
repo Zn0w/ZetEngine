@@ -6,6 +6,8 @@ import java.util.HashMap;
 
 import org.lwjgl.util.Rectangle;
 
+import com.znow.zetengine.level.Level;
+
 public abstract class GameObject {
 
 	protected int x, y, w, h;
@@ -15,6 +17,7 @@ public abstract class GameObject {
 	
 	public static ArrayList<GameObject> renderObjects = new ArrayList<GameObject>();
 	public static HashMap<String, GameObject> objects = new HashMap<String, GameObject>();
+	//public static ArrayList<GameObject> staticObjects = new ArrayList<GameObject>();
 	
 	//private String tag;
 	
@@ -35,6 +38,19 @@ public abstract class GameObject {
 		objects.put(tag, this);
 	}
 	
+	public GameObject(int sx, int sy, int sw, int sh, String tag, Level level) {
+		x = sx;
+		y = sy;
+		w = sw;
+		h = sh;
+		
+		renderObjects.add(this);
+		
+		objects.put(tag, this);
+		
+		level.putInLevel(this);
+	}
+	
 	public void draw() {
 		glColor3f(0.5f, 0.5f, 0.5f);
 		
@@ -46,55 +62,91 @@ public abstract class GameObject {
 		glEnd();
 	}
 	
+	public String checkStaticCollision(String tag) {
+		GameObject other = objects.get(tag);
+		
+		boolean colR = false, colL = false, colU = false, colD = false;
+		
+		if (getCollisionSide("wall", "horizontal") == "right") {
+			colR = true;
+		}
+		if (getCollisionSide("wall", "vertical") == "up") {
+			colU = true;
+		}
+		if (getCollisionSide("wall", "horizontal") == "left") {
+			colL = true;
+		}
+		if (getCollisionSide("wall", "vertical") == "down") {
+			colD = true;
+		}
+		
+		if (colR && colD) {
+			if (y + h > other.y)
+				return "r";
+		}
+		else return "d";
+		
+		if (colR && colU) {
+			if (y > other.y + other.h)
+				return "r";
+		}
+		else return "u";
+		
+		if (colL && colU) {
+			if (y > other.y + other.h)
+				return "l";
+		}
+		else return "u";
+		
+		if (colL && colD) {
+			if (y + h > other.y)
+				return "l";
+		}
+		else return "d";
+		
+		if (isHitting("wall")) {
+			System.out.println("Collision detected");
+		}
+		
+		return null;
+	}
+	
 	private boolean isHitting(GameObject other) {
-		if (this.x + this.w >= other.x && this.x <= other.x + other.w && this.y + this.h >= other.y && this.y <= other.y + other.h)
+		if (x + w >= other.x && x <= other.x + other.w && y + h >= other.y && y <= other.y + other.h)
 			return true;
 		return false;
 	}
 	
-	private String getCollisionSide(GameObject other) {
-		if (this.x + this.w >= other.x && this.x + this.w <= other.x + other.w && this.y + this.h >= other.y && this.y <= other.y + other.h)
+	private String getCollisionSideHorizontal(GameObject other) {
+		if (x + w >= other.x && x + w <= other.x + other.w && y + h >= other.y && y <= other.y + other.h)
 			return "right";
-		if (this.x <= other.x + this.w && this.x >= other.x + other.w && this.y + this.h >= other.y && this.y <= other.y + other.h)
+		if (x >= other.x && x <= other.x + other.w && y + h >= other.y && y <= other.y + other.h)
 			return "left";
-		if (this.y + this.h >= other.y && this.y + this.h <= other.y + other.h && this.x + this.w >= other.x && this.x <= other.x + other.w)
-			return "down";
-		if (this.y <= other.y + other.h && this.y >= other.y + other.h && this.x >= other.x && this.x <= other.x + other.w)
-			return "up";
 		return null;
 	}
 	
-	public String getCollisionSide(String tag) {
+	private String getCollisionSideVertical(GameObject other) {
+		if (y <= other.y + other.h && y + h >= other.y + other.h && x + w >= other.x && x <= other.x + other.w)
+			return "up";
+		if (y + h <= other.y + other.h && y + h >= other.y && x + w >= other.x && x <= other.x + other.w)
+			return "down";
+		return null;
+	}
+	
+	public String getCollisionSide(String tag, String axis) {
 		if (isHitting(objects.get(tag))) {
-			return getCollisionSide(objects.get(tag));
+			if (axis == "horizontal")
+				return getCollisionSideHorizontal(objects.get(tag));
+			if (axis == "vertical")
+				return getCollisionSideVertical(objects.get(tag));
 		}
 		return null;
-	}
-	
-	private boolean isHittingX(GameObject other) {
-		if (this.x + this.w > other.x && this.x < other.x + other.w)
-			return true;
-		return false;
-	}
-	
-	private boolean isHittingY(GameObject other) {
-		if (this.y + this.h > other.y && this.y < other.y + other.h)
-			return true;
-		return false;
 	}
 	
 	public boolean isHitting(String tag) {
 		if (isHitting(objects.get(tag)))
 			return true;
 		return false;
-	}
-	
-	public boolean isHittingX(String tag) {
-		return isHittingX(objects.get(tag));
-	}
-	
-	public boolean isHittingY(String tag) {
-		return isHittingY(objects.get(tag));
 	}
 	
 	public boolean isVisible() {

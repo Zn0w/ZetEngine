@@ -5,12 +5,12 @@ import org.lwjgl.input.*;
 
 public class Player extends GameObject {
 
-	private static int SPEED = 1;
+	private static int SPEED = 5;
 	
-	private int speedUp = SPEED;
-	private int speedDown = SPEED;
-	private int speedRight = SPEED;
-	private int speedLeft = SPEED;
+	private int speedU = SPEED;
+	private int speedD = SPEED;
+	private int speedR = SPEED;
+	private int speedL = SPEED;
 	
 	public Player(int x, int y, int w, int h, String tag) {
 		super(x, y, w, h, tag);
@@ -31,33 +31,48 @@ public class Player extends GameObject {
 		// Player controls
 		
 		if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-			this.y -= speedUp;
+			y -= speedU;
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-			this.y += speedDown;
+			y += speedD; 
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-			this.x += speedRight;
+			x += speedR;
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-			this.x -= speedLeft;
+			x -= speedL;
 		}
 		
-		speedUp = SPEED;
-		speedDown = SPEED;
-		speedLeft = SPEED;
-		speedRight = SPEED;
+		speedU = SPEED;
+		speedD = SPEED;
+		speedL = SPEED;
+		speedR = SPEED;
 		
 		// Collision handling
+		if (isHitting("wall"))
+			System.out.println("Collision detected");
 		
-		if (getCollisionSide("wall") == "right")
-			speedRight = 0;
-		if (getCollisionSide("wall") == "left")
-			speedLeft = 0;
-		if (getCollisionSide("wall") == "up")
-			speedDown = 0;
-		if (getCollisionSide("wall") == "down")
-			speedUp = 0;
+		/*boolean colR = false, colL = false, colU = false, colD = false;
+		
+		if (getCollisionSide("wall", "horizontal") == "right") {
+			colR = true;
+		}
+		if (getCollisionSide("wall", "vertical") == "up") {
+			colU = true;
+		}
+		if (getCollisionSide("wall", "horizontal") == "left") {
+			colL = true;
+		}
+		if (getCollisionSide("wall", "vertical") == "down") {
+			colD = true;
+		}
+		
+		if (colR && colU)
+			
+		
+		if (isHitting("wall")) {
+			System.out.println("Collision detected");
+		}*/
 		
 		// Just testing
 		
