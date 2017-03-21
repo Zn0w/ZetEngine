@@ -1,6 +1,6 @@
 package com.znow.test.LevelLoadingTest;
 
-public class Level {
+public class LevelTest {
 
 	public int w = 40, h = 12;
 	

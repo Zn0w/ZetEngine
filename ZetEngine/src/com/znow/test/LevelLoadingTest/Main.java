@@ -1,18 +1,40 @@
 package com.znow.test.LevelLoadingTest;
 
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glColor3f;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glVertex2f;
+
 import org.lwjgl.opengl.Display;
 
-import com.znow.test.Player;
-import com.znow.test.Wall;
 import com.znow.zetengine.DisplayManager;
 import com.znow.zetengine.GameObject;
 import com.znow.zetengine.Renderer;
-import static org.lwjgl.opengl.GL11.*;
+import com.znow.zetengine.level.Level;
 
 public class Main {
 
 	public static void main(String[] args) {
-		Level testLevel = new Level();
+		String[] tileMap = {
+				"RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR",
+				"B                                      B",
+				"B                BBBBBBBB              B",
+				"B                BBBBBBBB              B",
+				"B        BR      BBBBBBBB              B",
+				"B                BBBBBBBB              B",
+				"B                BBBBBBBB              B",
+				"B       BBB      BBBBBBBB              B",
+				"B       BBB      BBBBBBBB              B",
+				"B                BBBBBBBB              B",
+				"B                                      B",
+				"BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+		};
+		
+		Level testLevel = new Level(40, 12, tileMap);
+		testLevel.registerLevelTileType('B', 0.0f, 0.0f, 1.0f);
+		testLevel.registerLevelTileType('R', 1.0f, 0.0f, 0.0f);
+		testLevel.registerLevelTileType(' ', 1.0f, 1.0f, 1.0f);
 		
 		Renderer renderer = new Renderer();
 
@@ -31,26 +53,7 @@ public class Main {
 					object.draw();
 			}
 			
-			for (int y = 0; y < testLevel.h; y++) {
-				for (int x = 0; x < testLevel.w; x++) {
-					if (testLevel.tileMap[y].charAt(x) == 'B')
-						glColor3f(0.0f, 0.0f, 1.0f);
-					if (testLevel.tileMap[y].charAt(x) == 'R')
-						glColor3f(1.0f, 0.0f, 0.0f);
-					if (testLevel.tileMap[y].charAt(x) == ' ')
-						continue;
-					
-					int posX = x * 32;
-					int posY = y * 32;
-						
-					glBegin(GL_QUADS);
-					glVertex2f(posX, posY);
-					glVertex2f(posX + 32, posY);
-					glVertex2f(posX + 32, posY + 32);
-					glVertex2f(posX, posY + 32);
-					glEnd();
-				}
-			}
+			testLevel.render();
 			
 			DisplayManager.updateDisplay();
 		}
