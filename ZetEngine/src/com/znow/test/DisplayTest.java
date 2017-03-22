@@ -39,7 +39,7 @@ public class DisplayTest {
 				for (int i = 0; i < Level.levels.size(); i++) {
 					Level level = Level.levels.get(i);
 					if (level.isActive()) {
-						level
+						level.render();
 					}
 				}
 			}

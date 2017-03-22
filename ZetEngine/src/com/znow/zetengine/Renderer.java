@@ -10,8 +10,6 @@ public class Renderer {
 		glOrtho(0, 1280, 720, 0, 1, -1);
 		glMatrixMode(GL_MODELVIEW);
 		glDisable(GL_TEXTURE_2D);
-		//glEnable(GL_BLEND);
-		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 	
 	public void prepare() {
@@ -19,8 +17,4 @@ public class Renderer {
 		GL11.glClearColor(1, 1, 1, 1);
 	}
 	
-	/*public void render(GameObject model) {
-		model.draw();
-	}*/
-
 }

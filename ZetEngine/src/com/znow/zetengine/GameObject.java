@@ -17,7 +17,6 @@ public abstract class GameObject {
 	
 	public static ArrayList<GameObject> renderObjects = new ArrayList<GameObject>();
 	public static HashMap<String, GameObject> objects = new HashMap<String, GameObject>();
-	//public static ArrayList<GameObject> staticObjects = new ArrayList<GameObject>();
 	
 	//private String tag;
 	

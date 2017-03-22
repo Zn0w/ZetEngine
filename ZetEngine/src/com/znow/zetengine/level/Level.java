@@ -58,13 +58,6 @@ public class Level {
 					glColor3f(colour[0], colour[1], colour[2]);
 				}
 				
-				/*if (map[y].charAt(x) == 'B')
-					glColor3f(0.0f, 0.0f, 1.0f);
-				if (map[y].charAt(x) == 'R')
-					glColor3f(1.0f, 0.0f, 0.0f);
-				if (map[y].charAt(x) == ' ')
-					continue;*/
-				
 				int posX = x * 32;
 				int posY = y * 32;
 					
@@ -78,18 +71,16 @@ public class Level {
 		}
 	}
 	
-	public void checkStaticCollisionX(char id, GameObject object) {
-		for (int i = object.getY() / 32; i < (object.getY() + object.getH()) / 32; i++) {
-			for (int j = object.getX() / 32; j < (object.getX() + object.getW()) / 32; j++) {
-				if (map[i].charAt(j) == id) {
-					int posX = j * 32;
-					int posY = i * 32;
-					
-					if (object.getX() + object.getW() > posX)
-						object.setX(posX - object.getW());
-					else object.setX(posX + 32);
-				}
-			}
+	public void renderLevelObjects() {
+		if (levelObjects.size() == 0)
+			return;
+		
+		for (int i = 0; i < levelObjects.size(); i++) {
+			GameObject object = levelObjects.get(i);
+			if (object.isActive())
+				object.update();
+			if (object.isVisible())
+				object.draw();
 		}
 	}
 	
@@ -99,6 +90,12 @@ public class Level {
 	
 	public void setActive(boolean b) {
 		active = b;
+		
+		for (int i = 0; i < levels.size(); i++) {
+			if (levels.get(i) == this)
+				continue;
+			else levels.get(i).setActive(false);
+		}
 	}
 	
 	public boolean isActive() {

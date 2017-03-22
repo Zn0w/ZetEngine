@@ -52,28 +52,6 @@ public class Player extends GameObject {
 		if (isHitting("wall"))
 			System.out.println("Collision detected");
 		
-		/*boolean colR = false, colL = false, colU = false, colD = false;
-		
-		if (getCollisionSide("wall", "horizontal") == "right") {
-			colR = true;
-		}
-		if (getCollisionSide("wall", "vertical") == "up") {
-			colU = true;
-		}
-		if (getCollisionSide("wall", "horizontal") == "left") {
-			colL = true;
-		}
-		if (getCollisionSide("wall", "vertical") == "down") {
-			colD = true;
-		}
-		
-		if (colR && colU)
-			
-		
-		if (isHitting("wall")) {
-			System.out.println("Collision detected");
-		}*/
-		
 		// Just testing
 		
 		if (Keyboard.isKeyDown(Keyboard.KEY_A)) {

@@ -7,12 +7,29 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.PixelFormat;
 
+import com.znow.test.Player;
+import com.znow.test.Wall;
+import com.znow.zetengine.level.Level;
+
 public class DisplayManager {
 	
-	private static final int WIDTH = 1200;
-	private static final int HEIGHT = 700;
+	private static int WIDTH = 1200;
+	private static int HEIGHT = 700;
 	private static int FPS_CAP = 60;
-	private static String title = "TestGame";
+	private static String title = "Game";
+	
+	public static void init(int w, int h, String s_title) {
+		WIDTH = w;
+		HEIGHT = h;
+		title = s_title;
+	}
+	
+	public static void init(int w, int h, String s_title, int fps) {
+		WIDTH = w;
+		HEIGHT = h;
+		FPS_CAP = fps;
+		title = s_title;
+	}
 	
 	public static void createDisplay() {
 		try {
@@ -36,5 +53,42 @@ public class DisplayManager {
 	
 	public static void closeDisplay() {
 		Display.destroy();
+	}
+	
+	public static void render() {
+		Renderer renderer = new Renderer();
+		
+		Player player = new Player(400, 400, 50, 50, "player");
+		Wall rightWall = new Wall(600, 100, 100, 500, "wall");
+		
+		DisplayManager.createDisplay();
+		
+		renderer.init();
+		
+		while (!Display.isCloseRequested()) {
+			renderer.prepare();
+			
+			if (Level.levels.size() > 0) {
+				for (int i = 0; i < Level.levels.size(); i++) {
+					Level level = Level.levels.get(i);
+					if (level.isActive()) {
+						level.render();
+						level.renderLevelObjects();
+					}
+				}
+			}
+			
+			for (int i = 0; i < GameObject.renderObjects.size(); i++) {
+				GameObject object = GameObject.renderObjects.get(i);
+				if (object.isActive())
+					object.update();
+				if (object.isVisible())
+					object.draw();
+			}
+			
+			DisplayManager.updateDisplay();
+		}
+		
+		DisplayManager.closeDisplay();
 	}
 }
