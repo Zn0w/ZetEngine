@@ -24,7 +24,7 @@ public class GameContainer implements Runnable {
 		
 		while (running) {	
 			game.update(this);
-			DisplayManager.render();
+			DisplayManager.renderDisplay();
 		}
 		
 		dispose();

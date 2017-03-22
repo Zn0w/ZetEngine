@@ -55,11 +55,8 @@ public class DisplayManager {
 		Display.destroy();
 	}
 	
-	public static void render() {
+	public static void renderDisplay() {
 		Renderer renderer = new Renderer();
-		
-		Player player = new Player(400, 400, 50, 50, "player");
-		Wall rightWall = new Wall(600, 100, 100, 500, "wall");
 		
 		DisplayManager.createDisplay();
 		
