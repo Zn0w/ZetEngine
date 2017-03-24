@@ -16,7 +16,7 @@ public abstract class GameObject {
 	protected boolean active = true;
 	
 	public static ArrayList<GameObject> renderObjects = new ArrayList<GameObject>();
-	public static HashMap<String, GameObject> objects = new HashMap<String, GameObject>();
+	public static HashMap<String, ArrayList<GameObject>> objects = new HashMap<String, ArrayList<GameObject>>();
 	
 	//private String tag;
 	
@@ -34,7 +34,16 @@ public abstract class GameObject {
 		
 		renderObjects.add(this);
 		
-		objects.put(tag, this);
+		if (objects.get(tag) != null) {
+			ArrayList<GameObject> objs = objects.get(tag);
+			objs.add(this);
+			objects.put(tag, objs);
+		}
+		else {
+			ArrayList<GameObject> objs = new ArrayList<GameObject>();
+			objs.add(this);
+			objects.put(tag, objs);
+		}
 	}
 	
 	public GameObject(int sx, int sy, int sw, int sh, String tag, Level level) {
@@ -45,7 +54,16 @@ public abstract class GameObject {
 		
 		renderObjects.add(this);
 		
-		objects.put(tag, this);
+		if (objects.get(tag) != null) {
+			ArrayList<GameObject> objs = objects.get(tag);
+			objs.add(this);
+			objects.put(tag, objs);
+		}
+		else {
+			ArrayList<GameObject> objs = new ArrayList<GameObject>();
+			objs.add(this);
+			objects.put(tag, objs);
+		}
 		
 		level.putInLevel(this);
 	}
@@ -59,55 +77,6 @@ public abstract class GameObject {
 		glVertex2f(x + w, y + h);
 		glVertex2f(x, y + h);
 		glEnd();
-	}
-	
-	public String checkStaticCollision(String tag) {
-		GameObject other = objects.get(tag);
-		
-		boolean colR = false, colL = false, colU = false, colD = false;
-		
-		if (getCollisionSide("wall", "horizontal") == "right") {
-			colR = true;
-		}
-		if (getCollisionSide("wall", "vertical") == "up") {
-			colU = true;
-		}
-		if (getCollisionSide("wall", "horizontal") == "left") {
-			colL = true;
-		}
-		if (getCollisionSide("wall", "vertical") == "down") {
-			colD = true;
-		}
-		
-		if (colR && colD) {
-			if (y + h > other.y)
-				return "r";
-		}
-		else return "d";
-		
-		if (colR && colU) {
-			if (y > other.y + other.h)
-				return "r";
-		}
-		else return "u";
-		
-		if (colL && colU) {
-			if (y > other.y + other.h)
-				return "l";
-		}
-		else return "u";
-		
-		if (colL && colD) {
-			if (y + h > other.y)
-				return "l";
-		}
-		else return "d";
-		
-		if (isHitting("wall")) {
-			System.out.println("Collision detected");
-		}
-		
-		return null;
 	}
 	
 	private boolean isHitting(GameObject other) {
@@ -133,18 +102,28 @@ public abstract class GameObject {
 	}
 	
 	public String getCollisionSide(String tag, String axis) {
-		if (isHitting(objects.get(tag))) {
-			if (axis == "horizontal")
-				return getCollisionSideHorizontal(objects.get(tag));
-			if (axis == "vertical")
-				return getCollisionSideVertical(objects.get(tag));
+		ArrayList<GameObject> objs = objects.get(tag);
+		
+		for (int i = 0; i < objs.size(); i++) {
+			if (isHitting(objs.get(i))) {
+				if (axis == "horizontal")
+					return getCollisionSideHorizontal(objs.get(i));
+				if (axis == "vertical")
+					return getCollisionSideVertical(objs.get(i));
+			}
 		}
+		
 		return null;
 	}
 	
 	public boolean isHitting(String tag) {
-		if (isHitting(objects.get(tag)))
-			return true;
+		ArrayList<GameObject> objs = objects.get(tag);
+		
+		for (int i = 0; i < objs.size(); i++) {
+			if (isHitting(objs.get(i)))
+				return true;
+		}
+		
 		return false;
 	}
 	

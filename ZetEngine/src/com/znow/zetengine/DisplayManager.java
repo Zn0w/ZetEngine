@@ -55,37 +55,4 @@ public class DisplayManager {
 		Display.destroy();
 	}
 	
-	public static void renderDisplay() {
-		Renderer renderer = new Renderer();
-		
-		DisplayManager.createDisplay();
-		
-		renderer.init();
-		
-		while (!Display.isCloseRequested()) {
-			renderer.prepare();
-			
-			if (Level.levels.size() > 0) {
-				for (int i = 0; i < Level.levels.size(); i++) {
-					Level level = Level.levels.get(i);
-					if (level.isActive()) {
-						level.render();
-						level.renderLevelObjects();
-					}
-				}
-			}
-			
-			for (int i = 0; i < GameObject.renderObjects.size(); i++) {
-				GameObject object = GameObject.renderObjects.get(i);
-				if (object.isActive())
-					object.update();
-				if (object.isVisible())
-					object.draw();
-			}
-			
-			DisplayManager.updateDisplay();
-		}
-		
-		DisplayManager.closeDisplay();
-	}
 }
