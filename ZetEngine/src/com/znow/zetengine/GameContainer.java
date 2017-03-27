@@ -38,6 +38,11 @@ public class GameContainer implements Runnable {
 		
 		renderer.init();
 		
+		for (int i = 0; i < GameObject.renderObjects.size(); i++) {
+			GameObject object = GameObject.renderObjects.get(i);
+			object.init();
+		}
+		
 		while (!Display.isCloseRequested()) {
 			renderer.prepare();
 			
@@ -53,23 +58,20 @@ public class GameContainer implements Runnable {
 				}
 			}
 			
-			for (int i = 0; i < GameObject.renderObjects.size(); i++) {
-				GameObject object = GameObject.renderObjects.get(i);
-				if (object.isActive())
-					object.update();
-				if (object.isVisible())
-					object.draw();
+			else {
+				for (int i = 0; i < GameObject.renderObjects.size(); i++) {
+					GameObject object = GameObject.renderObjects.get(i);
+					if (object.isActive())
+						object.update();
+					if (object.isVisible())
+						object.draw();
+				}
 			}
 			
 			DisplayManager.updateDisplay();
 		}
 		
 		DisplayManager.closeDisplay();
-		
-		for (int i = 0; i < GameObject.renderObjects.size(); i++) {
-			GameObject object = GameObject.renderObjects.get(i);
-			object.init();
-		}
 		
 		dispose();
 	}

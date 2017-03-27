@@ -18,7 +18,7 @@ public abstract class GameObject {
 	public static ArrayList<GameObject> renderObjects = new ArrayList<GameObject>();
 	public static HashMap<String, ArrayList<GameObject>> objects = new HashMap<String, ArrayList<GameObject>>();
 	
-	//private String tag;
+	private float red, green, blue;
 	
 	public abstract void init();
 	
@@ -69,7 +69,7 @@ public abstract class GameObject {
 	}
 	
 	public void draw() {
-		glColor3f(0.5f, 0.5f, 0.5f);
+		glColor3f(red, green, blue);
 		
 		glBegin(GL_QUADS);
 		glVertex2f(x, y);
@@ -77,6 +77,12 @@ public abstract class GameObject {
 		glVertex2f(x + w, y + h);
 		glVertex2f(x, y + h);
 		glEnd();
+	}
+	
+	public void setColour(float r, float g, float b) {
+		red = r;
+		green = g;
+		blue = b;
 	}
 	
 	private boolean isHitting(GameObject other) {
@@ -165,6 +171,14 @@ public abstract class GameObject {
 
 	public void setH(int h) {
 		this.h = h;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 	
 }
