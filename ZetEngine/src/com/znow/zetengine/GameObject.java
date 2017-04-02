@@ -10,8 +10,7 @@ import com.znow.zetengine.level.Level;
 
 public abstract class GameObject {
 
-	//protected int x, y, w, h;        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	public int x, y, w, h;
+	protected int x, y, w, h;
 	
 	protected boolean visible = true;
 	protected boolean active = true;
@@ -93,9 +92,9 @@ public abstract class GameObject {
 	}
 	
 	private String getCollisionSideHorizontal(GameObject other) {
-		if (x + w >= other.x && x + w <= other.x + other.w && y + h >= other.y && y <= other.y + other.h)
+		if (x + w >= other.x && x + w <= other.x + other.w && x < other.x && y + h >= other.y && y <= other.y + other.h)
 			return "right";
-		if (x >= other.x && x <= other.x + other.w && y + h >= other.y && y <= other.y + other.h)
+		else if (x >= other.x && x <= other.x + other.w && y + h >= other.y && y <= other.y + other.h)
 			return "left";
 		return null;
 	}
@@ -103,7 +102,7 @@ public abstract class GameObject {
 	private String getCollisionSideVertical(GameObject other) {
 		if (y <= other.y + other.h && y + h >= other.y + other.h && x + w >= other.x && x <= other.x + other.w)
 			return "up";
-		if (y + h <= other.y + other.h && y + h >= other.y && x + w >= other.x && x <= other.x + other.w)
+		else if (y + h <= other.y + other.h && y + h >= other.y && y < other.y && x + w >= other.x && x <= other.x + other.w )
 			return "down";
 		return null;
 	}
