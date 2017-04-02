@@ -10,7 +10,8 @@ import com.znow.zetengine.level.Level;
 
 public abstract class GameObject {
 
-	protected int x, y, w, h;
+	//protected int x, y, w, h;        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	public int x, y, w, h;
 	
 	protected boolean visible = true;
 	protected boolean active = true;

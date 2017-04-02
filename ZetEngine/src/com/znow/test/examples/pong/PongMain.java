@@ -1,9 +1,11 @@
 package com.znow.test.examples.pong;
 
 import org.lwjgl.input.Keyboard;
-
 import com.znow.test.examples.pong.objects.*;
+import com.znow.zetengine.ActionHandler;
+import com.znow.zetengine.Button;
 import com.znow.zetengine.GameContainer;
+import com.znow.zetengine.Menu;
 import com.znow.zetengine.ZetGame;
 
 public class PongMain extends ZetGame {
@@ -11,6 +13,10 @@ public class PongMain extends ZetGame {
 	private Background background = new Background(0, 0, 1280, 720, "backgound");
 	private Board boardL, boardR;
 	private Ball ball;
+	
+	private Menu pauseMenu = new Menu();
+	
+	private Button resumeButton = new Button(400, 400, 40, 30, "D:/test/button.png");
 	
 	public static void main(String[] args) {
 		GameContainer game = new GameContainer(1280, 720, "PongGame", new PongMain(), 60);
@@ -28,6 +34,11 @@ public class PongMain extends ZetGame {
 		
 		ball = new Ball(630, 350, 10, 10, "ball");
 		ball.setActive(false);
+		
+		pauseMenu.setBackgroundColor(0.0f, 0.9f, 0.5f);
+		
+		resumeButton.setAction(new ResumeButtonHandler());
+		pauseMenu.addButton(resumeButton);
 	}
 
 	@Override
@@ -36,12 +47,20 @@ public class PongMain extends ZetGame {
 			boardL.setActive(true);
 			boardR.setActive(true);
 			ball.setActive(true);
+			
+			pauseMenu.setActive(false);
+			
+			gc.setRunning(true);
 		}
 		
 		if (Keyboard.isKeyDown(1)) {
 			boardL.setActive(false);
 			boardR.setActive(false);
 			ball.setActive(false);
+			
+			pauseMenu.setActive(true);
+			
+			gc.setRunning(false);
 		}
 		
 		if (ball.isOutOfBounds()) {
@@ -49,6 +68,19 @@ public class PongMain extends ZetGame {
 			boardR.respawn(1210, 320);
 			ball.respawn(630, 350);
 		}
+	}
+	
+	private class ResumeButtonHandler extends ActionHandler {
+		
+		@Override
+		public void onAction() {
+			pauseMenu.setActive(false);
+			
+			boardL.setActive(true);
+			boardR.setActive(true);
+			ball.setActive(true);
+		}
+
 	}
 
 }

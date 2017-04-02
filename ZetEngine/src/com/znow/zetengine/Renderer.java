@@ -9,7 +9,7 @@ public class Renderer {
 		glMatrixMode(GL_PROJECTION);
 		glOrtho(0, 1280, 720, 0, 1, -1);
 		glMatrixMode(GL_MODELVIEW);
-		glDisable(GL_TEXTURE_2D);
+		glEnable(GL_TEXTURE_2D);
 	}
 	
 	public void prepare() {
